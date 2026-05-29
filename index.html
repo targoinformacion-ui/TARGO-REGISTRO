@@ -373,7 +373,7 @@
 </header>
 
 <!-- BARRA DE PROGRESO -->
-<div class="progress-wrap">
+<div class="progress-wrap" id="progress-wrap" style="display:none">
   <div class="progress-top">
     <span class="progress-label" id="step-label">Paso 1 de 6</span>
     <span class="progress-count" id="step-pct">17%</span>
@@ -387,8 +387,44 @@
 <!-- FORMULARIO -->
 <div class="form-wrap">
 
-  <!-- ══════════════════════ PASO 1: QUIÉN ERES ══════════════════════ -->
-  <div class="step active" id="step-1">
+  <!-- ══════════════════════ TÉRMINOS Y CONDICIONES ══════════════════════ -->
+  <div class="step active" id="step-terms">
+    <p class="block-eyebrow">Antes de continuar</p>
+    <h2 class="block-title">TÉRMINOS Y<br>CONDICIONES</h2>
+    <p class="block-sub">Necesitamos que leas y aceptes lo siguiente para registrarte en la red TARGO.</p>
+
+    <div style="background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:var(--r);padding:24px;margin-bottom:28px">
+      <div style="display:flex;gap:14px;margin-bottom:20px">
+        <div style="flex-shrink:0;width:28px;height:28px;background:var(--amber);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--black);font-size:13px">1</div>
+        <p style="font-size:14px;line-height:1.7;color:rgba(255,255,255,.85);padding-top:4px">
+          TARGO es una plataforma tecnológica de intermediación. <strong style="color:var(--white)">NO</strong> somos una empresa de transporte ni somos responsables de la ejecución del flete.
+        </p>
+      </div>
+      <div style="height:1px;background:rgba(255,255,255,.07);margin-bottom:20px"></div>
+      <div style="display:flex;gap:14px">
+        <div style="flex-shrink:0;width:28px;height:28px;background:var(--amber);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--black);font-size:13px">2</div>
+        <p style="font-size:14px;line-height:1.7;color:rgba(255,255,255,.85);padding-top:4px">
+          Autorizas a TARGO a tratar tus datos personales (nombre, cédula, celular, placa) para conectarte con oportunidades de trabajo. Puedes solicitar su eliminación en cualquier momento.
+        </p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Escribe <strong style="color:var(--amber);font-size:13px">ACEPTO</strong> para continuar <span class="req">*</span></label>
+      <input type="text" id="f-acepto" placeholder="Escribe ACEPTO aquí"
+             autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"
+             style="text-transform:uppercase;letter-spacing:.12em;font-weight:600"/>
+      <p class="field-hint">Al escribir ACEPTO confirmas que leíste y aceptas los términos anteriores.</p>
+      <div class="field-error" id="e-acepto">Debes escribir ACEPTO para continuar.</div>
+    </div>
+
+    <div class="nav-btns">
+      <button type="button" id="btn-acepto" class="btn btn-amber" style="width:100%">
+        Acepto y quiero registrarme »
+      </button>
+    </div>
+  </div>
+  <div class="step" id="step-1">
     <p class="block-eyebrow">01 — Empecemos</p>
     <h2 class="block-title">¿QUIÉN<br>ERES?</h2>
     <p class="block-sub">Datos básicos tuyos. En menos de 2 minutos terminamos esta parte.</p>
@@ -1256,6 +1292,22 @@
      Más confiable que onclick inline en mobile (Android WebView, iOS Safari).
      Cubre: botones de navegación, opciones de selección y tags. */
   document.addEventListener('click', function(e) {
+
+    /* Botón de aceptar términos */
+    if (e.target.closest('#btn-acepto')) {
+      var acepto = document.getElementById('f-acepto').value.trim().toUpperCase();
+      var errAcepto = document.getElementById('e-acepto');
+      if (acepto !== 'ACEPTO') {
+        errAcepto.classList.add('show');
+        document.getElementById('f-acepto').classList.add('error');
+        return;
+      }
+      errAcepto.classList.remove('show');
+      document.getElementById('f-acepto').classList.remove('error');
+      document.getElementById('progress-wrap').style.display = 'block';
+      showStep(1);
+      return;
+    }
 
     /* Botones de navegación (data-next / data-prev / #btn-confirmar) */
     var navBtn = e.target.closest('[data-next], [data-prev], #btn-confirmar');
