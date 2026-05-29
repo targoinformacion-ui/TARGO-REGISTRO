@@ -333,7 +333,7 @@
     .success-title .amber{color:var(--amber)}
     .success-sub{
       font-size:15px;color:var(--mgray);line-height:1.6;
-      max-width:400px;margin:0 auto 0
+      max-width:400px;margin:0 auto 32px
     }
     .success-tagline{
       font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;
@@ -1451,7 +1451,6 @@
       nombre:                  document.getElementById('f-nombre').value.trim(),
       cedula:                  document.getElementById('f-cedula').value.trim(),
       whatsapp:                document.getElementById('f-wpp').value.trim(),
-      tel_alterno:             document.getElementById('f-tel2').value.trim() || null,
       municipio:               document.getElementById('f-municipio').value.trim(),
       departamento:            document.getElementById('f-dpto').value,
       tipo_vehiculo:           getSelected('tipo-vehiculo'),
@@ -1478,50 +1477,8 @@
     };
   }
 
-  /* Construir mensaje de WhatsApp */
-  function buildWppMsg(d) {
-    var cargas = d.tipos_carga.length > 0
-      ? d.tipos_carga.slice(0, 6).join(', ') +
-        (d.tipos_carga.length > 6 ? ' y más...' : '')
-      : 'No especificó';
-    var zonas = d.departamentos_operacion.length > 0
-      ? d.departamentos_operacion.slice(0, 5).join(', ') +
-        (d.departamentos_operacion.length > 5 ? '...' : '')
-      : 'No especificó';
-
-    return '🚛 *NUEVO CONDUCTOR TARGO*\n\n'
-      + '👤 *DATOS PERSONALES*\n'
-      + 'Nombre: ' + d.nombre + '\n'
-      + 'Cédula: ' + d.cedula + '\n'
-      + 'WhatsApp: +57 ' + d.whatsapp + '\n'
-      + (d.tel_alterno ? 'Tel alterno: ' + d.tel_alterno + '\n' : '')
-      + 'Base: ' + d.municipio + ', ' + d.departamento + '\n\n'
-      + '🚚 *VEHÍCULO*\n'
-      + 'Tipo: ' + d.tipo_vehiculo + '\n'
-      + 'Placa: ' + d.placa + '\n'
-      + (d.marca ? 'Marca: ' + d.marca + '\n' : '')
-      + (d.anio_vehiculo ? 'Año: ' + d.anio_vehiculo + '\n' : '')
-      + 'Capacidad: ' + d.capacidad_ton + ' ton\n'
-      + 'Carrocería: ' + d.carroceria + '\n'
-      + 'Estado: ' + d.estado_vehiculo + '\n\n'
-      + '📦 *TRABAJO*\n'
-      + 'Cargas: ' + cargas + '\n'
-      + 'Zonas: ' + zonas + '\n'
-      + 'Vías: ' + (d.tipo_vias || 'No especificó') + '\n'
-      + 'Larga distancia: ' + (d.viaje_largo || 'No especificó') + '\n\n'
-      + '📅 *DISPONIBILIDAD*\n'
-      + 'Estado: ' + d.disponibilidad + '\n'
-      + (d.fecha_disponible ? 'Disponible desde: ' + d.fecha_disponible + '\n' : '')
-      + (d.dias_semana.length ? 'Días: ' + d.dias_semana.join(', ') + '\n' : '')
-      + (d.urgencias ? 'Urgentes: ' + d.urgencias + '\n' : '')
-      + (d.experiencia_anios ? 'Experiencia: ' + d.experiencia_anios + '\n' : '')
-      + (d.notas ? '\n📝 Notas: ' + d.notas : '');
-  }
-
   /*
    * Mostrar pantalla de éxito.
-   * El href del botón WhatsApp se construye aquí — dentro del flujo del
-   * gesto del usuario (click directo) — para que iOS Safari no lo bloquee.
    */
   function mostrarExito(data) {
     document.getElementById('step-6').classList.remove('active');
