@@ -333,7 +333,7 @@
     .success-title .amber{color:var(--amber)}
     .success-sub{
       font-size:15px;color:var(--mgray);line-height:1.6;
-      max-width:400px;margin:0 auto 32px
+      max-width:400px;margin:0 auto 0
     }
     .success-tagline{
       font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;
@@ -414,13 +414,6 @@
              inputmode="numeric" autocomplete="tel"/>
       <p class="field-hint">Este es el número al que te llegarán las cargas. Sin el 57.</p>
       <div class="field-error" id="e-wpp">Ingresa un número de celular colombiano válido (10 dígitos).</div>
-    </div>
-
-    <div class="field">
-      <label class="field-label">Teléfono alterno</label>
-      <input type="tel" id="f-tel2" placeholder="Ej: 3109876543 — o deja vacío"
-             inputmode="numeric" autocomplete="tel"/>
-      <p class="field-hint">Opcional. Para contactarte si no respondes el principal.</p>
     </div>
 
     <div class="divider"></div>
@@ -1180,12 +1173,6 @@
       Ya eres parte de la red TARGO. Cuando haya una carga en tu zona que coincida
       con tu camión, te llegará un mensaje directo a tu WhatsApp.
     </p>
-    <div class="wpp-btn-wrap">
-      <a id="wpp-btn" href="#" class="btn btn-whatsapp"
-         target="_blank" rel="noopener noreferrer">
-        Ir al WhatsApp de TARGO »
-      </a>
-    </div>
     <p class="success-tagline">›› EL CAMPO SE MUEVE.</p>
   </div>
 
@@ -1578,11 +1565,6 @@
 
   /* WhatsApp: solo dígitos */
   document.getElementById('f-wpp').addEventListener('input', function() {
-    this.value = this.value.replace(/\D/g, '');
-  });
-
-  /* Teléfono alterno: solo dígitos */
-  document.getElementById('f-tel2').addEventListener('input', function() {
     this.value = this.value.replace(/\D/g, '');
   });
 
