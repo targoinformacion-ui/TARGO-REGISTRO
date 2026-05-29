@@ -1524,10 +1524,6 @@
    * gesto del usuario (click directo) — para que iOS Safari no lo bloquee.
    */
   function mostrarExito(data) {
-    var msg = buildWppMsg(data);
-    document.getElementById('wpp-btn').href =
-      'https://wa.me/' + TARGO_WPP + '?text=' + encodeURIComponent(msg);
-
     document.getElementById('step-6').classList.remove('active');
     document.getElementById('success').classList.add('active');
     document.getElementById('dots').style.display = 'none';
