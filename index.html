@@ -340,7 +340,7 @@
       letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-top:32px
     }
     .wpp-btn-wrap{
-      display:none
+      display:flex;justify-content:center;margin:0 auto;max-width:320px
     }
 
     /* ── ERRORES ── */
@@ -373,7 +373,7 @@
 </header>
 
 <!-- BARRA DE PROGRESO -->
-<div class="progress-wrap" id="progress-wrap" style="display:none">
+<div class="progress-wrap">
   <div class="progress-top">
     <span class="progress-label" id="step-label">Paso 1 de 6</span>
     <span class="progress-count" id="step-pct">17%</span>
@@ -387,44 +387,8 @@
 <!-- FORMULARIO -->
 <div class="form-wrap">
 
-  <!-- ══════════════════════ TÉRMINOS Y CONDICIONES ══════════════════════ -->
-  <div class="step active" id="step-terms">
-    <p class="block-eyebrow">Antes de continuar</p>
-    <h2 class="block-title">TÉRMINOS Y<br>CONDICIONES</h2>
-    <p class="block-sub">Necesitamos que leas y aceptes lo siguiente para registrarte en la red TARGO.</p>
-
-    <div style="background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:var(--r);padding:24px;margin-bottom:28px">
-      <div style="display:flex;gap:14px;margin-bottom:20px">
-        <div style="flex-shrink:0;width:28px;height:28px;background:var(--amber);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--black);font-size:13px">1</div>
-        <p style="font-size:14px;line-height:1.7;color:rgba(255,255,255,.85);padding-top:4px">
-          TARGO es una plataforma tecnológica de intermediación. <strong style="color:var(--white)">NO</strong> somos una empresa de transporte ni somos responsables de la ejecución del flete.
-        </p>
-      </div>
-      <div style="height:1px;background:rgba(255,255,255,.07);margin-bottom:20px"></div>
-      <div style="display:flex;gap:14px">
-        <div style="flex-shrink:0;width:28px;height:28px;background:var(--amber);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--black);font-size:13px">2</div>
-        <p style="font-size:14px;line-height:1.7;color:rgba(255,255,255,.85);padding-top:4px">
-          Autorizas a TARGO a tratar tus datos personales (nombre, cédula, celular, placa) para conectarte con oportunidades de trabajo. Puedes solicitar su eliminación en cualquier momento.
-        </p>
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="field-label">Escribe <strong style="color:var(--amber);font-size:13px">ACEPTO</strong> para continuar <span class="req">*</span></label>
-      <input type="text" id="f-acepto" placeholder="Escribe ACEPTO aquí"
-             autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"
-             style="text-transform:uppercase;letter-spacing:.12em;font-weight:600"/>
-      <p class="field-hint">Al escribir ACEPTO confirmas que leíste y aceptas los términos anteriores.</p>
-      <div class="field-error" id="e-acepto">Debes escribir ACEPTO para continuar.</div>
-    </div>
-
-    <div class="nav-btns">
-      <button type="button" id="btn-acepto" class="btn btn-amber" style="width:100%">
-        Acepto y quiero registrarme »
-      </button>
-    </div>
-  </div>
-  <div class="step" id="step-1">
+  <!-- ══════════════════════ PASO 1: QUIÉN ERES ══════════════════════ -->
+  <div class="step active" id="step-1">
     <p class="block-eyebrow">01 — Empecemos</p>
     <h2 class="block-title">¿QUIÉN<br>ERES?</h2>
     <p class="block-sub">Datos básicos tuyos. En menos de 2 minutos terminamos esta parte.</p>
@@ -1188,6 +1152,23 @@
       </div>
     </div>
 
+    <label id="terms-check-wrap" style="display:flex;align-items:flex-start;gap:12px;
+           background:var(--dark);border:1.5px solid rgba(255,255,255,.08);
+           border-radius:var(--r);padding:14px 16px;cursor:pointer;
+           margin-bottom:4px;touch-action:manipulation">
+      <input type="checkbox" id="f-terms" style="
+        width:18px;height:18px;min-width:18px;margin-top:1px;cursor:pointer;
+        accent-color:var(--amber);border-radius:3px"/>
+      <span style="font-size:13px;color:rgba(255,255,255,.75);line-height:1.55">
+        He leído y acepto los <strong style="color:var(--white)">términos y condiciones</strong> de TARGO:
+        intermediación tecnológica sin responsabilidad sobre el flete, y autorizo el uso
+        de mis datos personales para conectarme con oportunidades de trabajo.
+      </span>
+    </label>
+    <div class="field-error" id="e-terms" style="margin-bottom:20px">
+      Debes aceptar los términos y condiciones para continuar.
+    </div>
+
     <div class="nav-btns" style="flex-direction:column">
       <button type="button" id="btn-confirmar" class="btn btn-whatsapp">
         ✅ Confirmar y registrarme en TARGO
@@ -1292,22 +1273,6 @@
      Más confiable que onclick inline en mobile (Android WebView, iOS Safari).
      Cubre: botones de navegación, opciones de selección y tags. */
   document.addEventListener('click', function(e) {
-
-    /* Botón de aceptar términos */
-    if (e.target.closest('#btn-acepto')) {
-      var acepto = document.getElementById('f-acepto').value.trim().toUpperCase();
-      var errAcepto = document.getElementById('e-acepto');
-      if (acepto !== 'ACEPTO') {
-        errAcepto.classList.add('show');
-        document.getElementById('f-acepto').classList.add('error');
-        return;
-      }
-      errAcepto.classList.remove('show');
-      document.getElementById('f-acepto').classList.remove('error');
-      document.getElementById('progress-wrap').style.display = 'block';
-      showStep(1);
-      return;
-    }
 
     /* Botones de navegación (data-next / data-prev / #btn-confirmar) */
     var navBtn = e.target.closest('[data-next], [data-prev], #btn-confirmar');
@@ -1596,6 +1561,15 @@
 
   /* Confirmar registro */
   function confirmar() {
+    /* Validar checkbox de términos */
+    if (!document.getElementById('f-terms').checked) {
+      document.getElementById('e-terms').classList.add('show');
+      document.getElementById('terms-check-wrap').style.borderColor = '#e74c3c';
+      document.getElementById('terms-check-wrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    document.getElementById('e-terms').classList.remove('show');
+
     var btn = document.getElementById('btn-confirmar');
     btn.textContent = '⏳ Enviando registro...';
     btn.disabled = true;
