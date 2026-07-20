@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -1169,6 +1170,10 @@
       Debes aceptar los términos y condiciones para continuar.
     </div>
 
+    <div class="field-error" id="e-envio" style="margin-bottom:12px">
+      ⚠️ No pudimos guardar tu registro. Verifica tu conexión e inténtalo de nuevo.
+    </div>
+
     <div class="nav-btns" style="flex-direction:column">
       <button type="button" id="btn-confirmar" class="btn btn-whatsapp">
         ✅ Confirmar y registrarme en TARGO
@@ -1204,7 +1209,7 @@
 
 <script>
   /* ── CONFIGURACIÓN — editar antes de publicar ──────────────── */
-  var WEBHOOK_URL = 'https://extras-massachusetts-spam-peripheral.trycloudflare.com/webhook/registro-conductor'
+  var WEBHOOK_URL = 'https://targopruebas.duckdns.org/webhook/registro-conductor'
   var TARGO_WPP   = '573181295577'
   /* ─────────────────────────────────────────────────────────── */
 
@@ -1571,6 +1576,8 @@
     document.getElementById('e-terms').classList.remove('show');
 
     var btn = document.getElementById('btn-confirmar');
+    var errEnvio = document.getElementById('e-envio');
+    errEnvio.classList.remove('show');
     btn.textContent = '⏳ Enviando registro...';
     btn.disabled = true;
 
@@ -1582,8 +1589,25 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       })
-      .then(function() { mostrarExito(data); })
-      .catch(function() { mostrarExito(data); });
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error('HTTP ' + response.status);
+        }
+        return response.json().catch(function() { return { ok: true }; });
+      })
+      .then(function(resJson) {
+        if (resJson && resJson.ok === false) {
+          throw new Error('El servidor reportó un error al guardar');
+        }
+        mostrarExito(data);
+      })
+      .catch(function(err) {
+        console.error('Error al enviar el registro:', err);
+        errEnvio.classList.add('show');
+        errEnvio.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        btn.textContent = '✅ Confirmar y registrarme en TARGO';
+        btn.disabled = false;
+      });
     } else {
       mostrarExito(data);
     }
